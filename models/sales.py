@@ -23,3 +23,7 @@ class Sale(BaseModel, Base):
     __tablename__ = 'sales'
     owner_id = Column(String(60), ForeignKey("users.id"), nullable=False)
     location_id = Column(String(60), ForeignKey("locations.id"))
+
+    def __init__(self, *args, **kwargs):
+        """initializes Hub class"""
+        super().__init__(*args, **kwargs)
