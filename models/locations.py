@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """Location Model-Module(Inherits from the BaseModel)"""
 from .base_model import BaseModel, Base
+from sqlalchemy.orm import relationship
 from sqlalchemy import String, Column, ForeignKey, Float
 
 
@@ -31,6 +32,7 @@ class Location(BaseModel, Base):
     latitude = Column(Float)
     owner_id = Column(String(60), ForeignKey("users.id"), nullable=True)
     hub_id = Column(String(60), ForeignKey("hubs.id"), nullable=True)
+    sales = relationship("Sale", backref="location", cascade="delete")
 
     def __init__(self, *args, **kwargs):
         """initializes Location class"""

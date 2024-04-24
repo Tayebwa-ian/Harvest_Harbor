@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """Hub Model-Module(Inherits from the BaseModel)"""
 from .base_model import BaseModel, Base
+from sqlalchemy.orm import relationship
 from sqlalchemy import String, Column, ForeignKey, Enum, Boolean
 
 
@@ -29,6 +30,9 @@ class Hub(BaseModel, Base):
                     default="pending")
     rank = Column(Enum("regular", "star", "diamond"), default="regular")
     location_id = Column(String(60), ForeignKey("locations.id"), nullable=False)
+    products = relationship("Product", backref="hub", cascade="delete")
+    locations = relationship("Location", backref="hub", cascade="delete")
+    images = relationship("Image", backref="hub", cascade="delete")
 
     def __init__(self, *args, **kwargs):
         """initializes Hub class"""

@@ -1,7 +1,8 @@
 #!/usr/bin/python3
 """User Model-Module(Inherits from the BaseModel)"""
 from .base_model import BaseModel, Base
-from sqlalchemy import String, Column, Boolean
+from sqlalchemy import String, Column, Boolean, Enum
+from sqlalchemy.orm import relationship
 
 
 class User(BaseModel, Base):
@@ -22,6 +23,8 @@ class User(BaseModel, Base):
                             of agricultural markets
         is_farming_expert: applies if a user proves to have strong technical
                             knowledge about farming
+        status: status of the app user (can change according to complaince)
+                possible statuses are active and pending
     """
     __tablename__ = "uusers"
     email = Column(String(128), nullable=False)
@@ -36,6 +39,12 @@ class User(BaseModel, Base):
     is_carrier = Column(Boolean, default=False)
     is_market_expert = Column(Boolean, default=False)
     is_farming_expert = Column(Boolean, default=False)
+    status = Column(Enum("acitve", "suspended"),
+                    default="active")
+    reviews = relationship("Review", backref="owner", cascade="delete")
+    hubs = relationship("Hub", backref="owner", cascade="delete")
+    sales = relationship("Sale", backref="owner", cascade="delete")
+    locations = relationship("Location", backref="owner", cascade="delete")
 
     def __init__(self, *args, **kwargs):
         """initializes Product class"""
