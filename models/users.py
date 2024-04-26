@@ -27,10 +27,10 @@ class User(BaseModel, Base):
                 possible statuses are active and pending
     """
     __tablename__ = "uusers"
-    email = Column(String(128), nullable=False)
+    email = Column(String(128), nullable=False, unique=True)
     password = Column(String(128), nullable=False)
     username = Column(String(128), nullable=False)
-    phone_number = Column(String(128), nullable=False)
+    phone_number = Column(String(128), nullable=False, unique=True)
     is_farmer = Column(Boolean, default=False)
     has_store = Column(Boolean, default=False)
     is_bulk_buyer = Column(Boolean, default=False)

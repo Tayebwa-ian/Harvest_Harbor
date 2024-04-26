@@ -6,6 +6,13 @@ from models.base_model import Base
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from models.categories import Category
+from models.hubs import Hub
+from models.users import User
+from models.products import Product
+from models.sales import Sale
+from models.reviews import Review
+from models.images import Image
+from models.locations import Location
 from os import getenv
 
 
@@ -18,8 +25,13 @@ class DBStorage:
     __session = None
     all_classes = {
         "User": User,
-        "Place": Place,
+        "Location": Location,
         "Category": Category,
+        "Hub": Hub,
+        "Image": Image,
+        "product": Product,
+        "Sale": Sale,
+        "Review": Review,
         }
 
     def __init__(self):
