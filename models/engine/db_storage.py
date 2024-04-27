@@ -59,13 +59,13 @@ class DBStorage:
         result = {}
         if cls:
             q = self.__session.query(cls).all()
-            return(self.to_dict(q))
+            return (self.to_dict(q))
         else:
             for key in self.all_classes.keys():
                 c = self.all_classes
                 q = self.__session.query(c[key]).all()
                 result.update(self.to_dict(q))
-            return(result)
+            return (result)
 
     def new(self, obj):
         """
@@ -114,7 +114,7 @@ class DBStorage:
         for instance in query:
             instance_key = instance.__class__.__name__ + '.' + instance.id
             final[instance_key] = instance
-        return(final)
+        return (final)
 
     def get(self, cls, id=None, **kwargs) -> object:
         """retrieve one object based on cls and id
@@ -125,15 +125,18 @@ class DBStorage:
         """
         if id:
             q = self.__session.query(cls).filter_by(id=id).one_or_none()
-        elif cls.__name__ == "User": # query by email or phone_number (works for user table)
+        elif cls.__name__ == "User":
+            # query by email or phone_number (works for user table)
             if 'email' in kwargs.keys():
                 email = kwargs.get('email')
-                q = self.__session.query(cls).filter_by(email=email).one_or_none()
+                q = self.__session.query(cls).\
+                    filter_by(email=email).one_or_none()
             elif 'phone_number' in kwargs.keys():
                 number = kwargs.get('phone_number')
-                q = self.__session.query(cls).filter_by(phone_number=number).one_or_none()
+                q = self.__session.query(cls).\
+                    filter_by(phone_number=number).one_or_none()
         if q:
-            return(q)
+            return (q)
 
     def count(self, cls=None) -> int:
         """count the number of objects in storage:
@@ -144,5 +147,5 @@ class DBStorage:
                 returns the count of all objects in storage.
         """
         if cls:
-            return(len(self.all(cls)))
-        return(len(self.all()))
+            return (len(self.all(cls)))
+        return (len(self.all()))

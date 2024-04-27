@@ -13,6 +13,7 @@ class Status(Enum):
     PENDING = 'pending'
     SUSPENDED = 'suspended'
 
+
 class UserSchema(Schema):
     """A User schema
     Responsible for: -serialization/deserialization
@@ -64,4 +65,4 @@ class UserSchema(Schema):
             data: the validated request data
             kwargs: any other key word arguments
         """
-        return(User(**data))
+        return (User(**data))

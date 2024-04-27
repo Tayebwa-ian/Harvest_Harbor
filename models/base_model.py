@@ -90,4 +90,4 @@ class BaseModel:
             del self_dict['_sa_instance_state']
         rep = "[{}] ({}) {}".format(self.__class__.__name__,
                                     self.id, self_dict)
-        return(rep)
+        return (rep)

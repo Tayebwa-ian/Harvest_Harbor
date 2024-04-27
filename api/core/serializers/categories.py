@@ -4,6 +4,7 @@
 from marshmallow import Schema, fields, post_load
 from models import Category
 
+
 class CategorySchema(Schema):
     """A category schema
     Responsible for: -serialization/deserialization
@@ -26,4 +27,4 @@ class CategorySchema(Schema):
             data: the validated request data
             kwargs: any other key word arguments
         """
-        return(Category(**data))
+        return (Category(**data))

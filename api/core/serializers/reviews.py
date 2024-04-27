@@ -27,4 +27,4 @@ class ReviewSchema(Schema):
             data: the validated request data
             kwargs: any other key word arguments
         """
-        return(Review(**data))
+        return (Review(**data))

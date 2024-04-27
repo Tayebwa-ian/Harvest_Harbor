@@ -6,12 +6,12 @@ from sqlalchemy import Table
 
 
 sold_products = Table("place_amenity", Base.metadata,
-                          Column("product_id", String(60),
-                                 ForeignKey("products.id"), nullable=False),
-                          Column("sale_id", String(60),
-                                 ForeignKey("sales.id"), nullable=False),
-                          Column("unit_price", Float, nullable=False),
-                          Column("quantities", Integer, nullable=False))
+                      Column("product_id", String(60),
+                             ForeignKey("products.id"), nullable=False),
+                      Column("sale_id", String(60),
+                             ForeignKey("sales.id"), nullable=False),
+                      Column("unit_price", Float, nullable=False),
+                      Column("quantities", Integer, nullable=False))
 
 
 class Sale(BaseModel, Base):

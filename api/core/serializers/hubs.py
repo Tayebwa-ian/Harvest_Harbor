@@ -13,11 +13,13 @@ class Status(Enum):
     PENDING = 'pending'
     SUSPENDED = 'suspended'
 
+
 class Rank(Enum):
     """Define possible ranks of a Hub"""
     REGULAR = 'regular'
     STAR = 'star'
     DIAMOND = 'diamond'
+
 
 class HubSchema(Schema):
     """A hub schema
@@ -45,4 +47,4 @@ class HubSchema(Schema):
             data: the validated request data
             kwargs: any other key word arguments
         """
-        return(Hub(**data))
+        return (Hub(**data))

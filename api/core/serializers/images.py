@@ -27,4 +27,4 @@ class ImageSchema(Schema):
             data: the validated request data
             kwargs: any other key word arguments
         """
-        return(Image(**data))
+        return (Image(**data))

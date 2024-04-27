@@ -15,7 +15,8 @@ class Category(BaseModel, Base):
     __tablename__ = 'categories'
     name = Column(String(128), nullable=False)
     description = Column(String(256), nullable=True)
-    category_id = Column(String(60), ForeignKey("categories.id"), nullable=True)
+    category_id = Column(String(60), ForeignKey("categories.id"),
+                         nullable=True)
     products = relationship("Product", backref="category", cascade="delete")
 
     def __init__(self, *args, **kwargs):

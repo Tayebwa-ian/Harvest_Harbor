@@ -35,4 +35,4 @@ class LocationSchema(Schema):
             data: the validated request data
             kwargs: any other key word arguments
         """
-        return(Location(**data))
+        return (Location(**data))

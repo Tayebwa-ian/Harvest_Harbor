@@ -15,7 +15,7 @@ class Hub(BaseModel, Base):
         is_bulk_seller: Does the hub sell its item in bulk
         is_retailer: Does the hub retail its items
         status: a hub can be active, approved, pending or suspended
-        owner_id: the owner of the hub 
+        owner_id: the owner of the hub
         rank: a hub can have ranks according to its performance
             possible ranks are regular, star and diamond
         location_id: ID of a place where the hub is located
@@ -29,7 +29,8 @@ class Hub(BaseModel, Base):
     status = Column(Enum("acitve", "approved", "pending", "suspended"),
                     default="pending")
     rank = Column(Enum("regular", "star", "diamond"), default="regular")
-    location_id = Column(String(60), ForeignKey("locations.id"), nullable=False)
+    location_id = Column(String(60), ForeignKey("locations.id"),
+                         nullable=False)
     products = relationship("Product", backref="hub", cascade="delete")
     locations = relationship("Location", backref="hub", cascade="delete")
     images = relationship("Image", backref="hub", cascade="delete")

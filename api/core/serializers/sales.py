@@ -26,4 +26,4 @@ class SaleSchema(Schema):
             data: the validated request data
             kwargs: any other key word arguments
         """
-        return(Sale(**data))
+        return (Sale(**data))

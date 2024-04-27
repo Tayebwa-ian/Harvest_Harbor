@@ -13,12 +13,13 @@ import json
 category_schema = CategorySchema(unknown='EXCLUDE')
 categories_schema = CategorySchema(many=True)
 
+
 class CategoryList(Resource):
     """Defines get(for all) and post request of categories"""
     def get(self):
         """retrieve all categories from the storage"""
         categories = storage.all(Category)
-        return(categories_schema.dump(categories), 200)
+        return (categories_schema.dump(categories), 200)
 
     def post(self):
         """Add a category to the storage"""
@@ -28,7 +29,8 @@ class CategoryList(Resource):
             abort(400, "invalid input data")
         new_category = Category(**data)
         new_category.save()
-        return(category_schema.dump(new_category), 201)
+        return (category_schema.dump(new_category), 201)
+
 
 class CategorySingle(Resource):
     """Retrieves a single category, deletes a category
@@ -40,7 +42,7 @@ class CategorySingle(Resource):
         """retrive a single category from the storage"""
         category = storage.get(Category, id=cat_id)
         if category:
-            return(category_schema.dump(category), 200)
+            return (category_schema.dump(category), 200)
 
     def delete(self, cat_id):
         """Delete category
@@ -51,7 +53,7 @@ class CategorySingle(Resource):
         if category:
             storage.delete(category)
             response = {'message': 'resource successfully deleted'}
-            return(json.dumps(response), 204)
+            return (json.dumps(response), 204)
 
     def put(self, cat_id):
         """Make changes to an existing category
@@ -68,4 +70,4 @@ class CategorySingle(Resource):
                 if hasattr(category, key):
                     setattr(category, data[key])
             storage.save()
-            return(category_schema.dump(category), 200)
+            return (category_schema.dump(category), 200)

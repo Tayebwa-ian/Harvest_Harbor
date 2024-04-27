@@ -31,4 +31,4 @@ class ProductSchema(Schema):
             data: the validated request data
             kwargs: any other key word arguments
         """
-        return(Product(**data))
+        return (Product(**data))
