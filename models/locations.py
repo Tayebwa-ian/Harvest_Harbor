@@ -2,7 +2,7 @@
 """Location Model-Module(Inherits from the BaseModel)"""
 from .base_model import BaseModel, Base
 from sqlalchemy.orm import relationship
-from sqlalchemy import String, Column, ForeignKey, Float
+from sqlalchemy import String, Column, ForeignKey, Float, Boolean
 
 
 class Location(BaseModel, Base):
@@ -17,6 +17,7 @@ class Location(BaseModel, Base):
         description: further description of the location
         Longtitude: coordinates
         latittude: coordinates
+        is_default: the default/main location of a user (it can be changed)
         owner_id: ID of owner of the location (optional)
         hub_id: ID of the hub located in this place  (optinal)
 
@@ -28,8 +29,9 @@ class Location(BaseModel, Base):
     postal_code = Column(String(60))
     apartment_number = Column(String(60))
     description = Column(String(256))
-    Longtitude = Column(Float)
+    longtitude = Column(Float)
     latitude = Column(Float)
+    is_default = Column(Boolean, default=False)
     owner_id = Column(String(60), ForeignKey("users.id"), nullable=True)
     hub_id = Column(String(60), ForeignKey("hubs.id"), nullable=True)
     sales = relationship("Sale", backref="location", cascade="delete")

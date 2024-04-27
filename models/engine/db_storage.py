@@ -83,7 +83,7 @@ class DBStorage:
         """
             Delete obj from db storage
         """
-        if obj is not None:
+        if obj:
             self.__session.delete(obj)
         self.save()
 
@@ -116,14 +116,22 @@ class DBStorage:
             final[instance_key] = instance
         return(final)
 
-    def get(self, cls, id) -> dict:
+    def get(self, cls, id=None, **kwargs) -> object:
         """retrieve one object based on cls and id
         Args:
             cls: class of the object
             id: Id of the object
         Return: object based on the class and its ID, or None
         """
-        q = self.__session.query(cls).filter_by(id=id).one_or_none()
+        if id:
+            q = self.__session.query(cls).filter_by(id=id).one_or_none()
+        elif cls.__name__ == "User": # query by email or phone_number (works for user table)
+            if 'email' in kwargs.keys():
+                email = kwargs.get('email')
+                q = self.__session.query(cls).filter_by(email=email).one_or_none()
+            elif 'phone_number' in kwargs.keys():
+                number = kwargs.get('phone_number')
+                q = self.__session.query(cls).filter_by(phone_number=number).one_or_none()
         if q:
             return(q)
 
