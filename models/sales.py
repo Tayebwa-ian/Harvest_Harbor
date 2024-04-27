@@ -5,7 +5,7 @@ from sqlalchemy import String, Column, ForeignKey, Float, Integer
 from sqlalchemy import Table
 
 
-sold_products = Table("place_amenity", Base.metadata,
+sold_products = Table("sold_products", Base.metadata,
                       Column("product_id", String(60),
                              ForeignKey("products.id"), nullable=False),
                       Column("sale_id", String(60),

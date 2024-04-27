@@ -26,6 +26,7 @@ class UserSchema(Schema):
     updated_at = fields.Str(dump_only=True)
     email = fields.Str(required=True)
     username = fields.Str(required=True)
+    password = fields.Str(load_only=True)
     phone_number = fields.Str(required=True)
     is_farmer = fields.Bool()
     has_store = fields.Bool()
