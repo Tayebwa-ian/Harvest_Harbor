@@ -4,13 +4,13 @@ category Views module
 """
 from flask_restful import Resource
 from models import storage, Category
-from serializers.categories import CategorySchema
-from marshmallow import ValidationError
+from ..serializers.categories import CategorySchema
+from marshmallow import ValidationError, EXCLUDE
 from flask import request, abort
 import json
 
 
-category_schema = CategorySchema(unknown='EXCLUDE')
+category_schema = CategorySchema(unknown=EXCLUDE)
 categories_schema = CategorySchema(many=True)
 
 

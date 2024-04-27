@@ -15,8 +15,8 @@ class Image(BaseModel, Base):
     """
     __tablename__ = 'images'
     link = Column(String(128), nullable=False)
-    product_id = Column(String(60), ForeignKey("locations.id"), nullable=True)
-    hub_id = Column(String(60), ForeignKey("locations.id"), nullable=True)
+    product_id = Column(String(60), ForeignKey("products.id"), nullable=True)
+    hub_id = Column(String(60), ForeignKey("hubs.id"), nullable=True)
 
     def __init__(self, *args, **kwargs):
         """initializes Image class"""

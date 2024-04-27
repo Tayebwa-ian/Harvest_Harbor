@@ -26,7 +26,7 @@ class User(BaseModel, Base):
         status: status of the app user (can change according to complaince)
                 possible statuses are active and pending
     """
-    __tablename__ = "uusers"
+    __tablename__ = "users"
     email = Column(String(128), nullable=False, unique=True)
     password = Column(String(128), nullable=False)
     username = Column(String(128), nullable=False)

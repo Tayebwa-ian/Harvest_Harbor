@@ -24,7 +24,6 @@ class Product(BaseModel, Base):
     unit_price = Column(Float, default=0.0)
     hub_id = Column(String(60), ForeignKey("hubs.id"), nullable=False)
     cat_id = Column(String(60), ForeignKey("categories.id"), nullable=False)
-    sales = relationship("Sale", backref="product")
     reviews = relationship("Review", backref="product", cascade="delete")
     images = relationship("Image", backref="product", cascade="delete")
 

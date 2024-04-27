@@ -18,7 +18,6 @@ class Hub(BaseModel, Base):
         owner_id: the owner of the hub
         rank: a hub can have ranks according to its performance
             possible ranks are regular, star and diamond
-        location_id: ID of a place where the hub is located
     """
     __tablename__ = 'hubs'
     name = Column(String(128), nullable=False)
@@ -29,8 +28,6 @@ class Hub(BaseModel, Base):
     status = Column(Enum("acitve", "approved", "pending", "suspended"),
                     default="pending")
     rank = Column(Enum("regular", "star", "diamond"), default="regular")
-    location_id = Column(String(60), ForeignKey("locations.id"),
-                         nullable=False)
     products = relationship("Product", backref="hub", cascade="delete")
     locations = relationship("Location", backref="hub", cascade="delete")
     images = relationship("Image", backref="hub", cascade="delete")
