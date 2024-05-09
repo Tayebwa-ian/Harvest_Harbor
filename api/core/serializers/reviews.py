@@ -1,8 +1,7 @@
 #!/usr/bin/python3
 """ReviewSchema - Module
 """
-from marshmallow import Schema, fields, post_load
-from models import Review
+from marshmallow import Schema, fields
 
 
 class ReviewSchema(Schema):
@@ -18,13 +17,3 @@ class ReviewSchema(Schema):
     text = fields.Str(required=True)
     owner_id = fields.Str(required=True)
     product_id = fields.Str(required=True)
-
-    @post_load
-    def create_review(self, data, **kwargs) -> None:
-        """create a review instance in the reviews table
-            when the loads method is called on this class and data is valid
-        Args:
-            data: the validated request data
-            kwargs: any other key word arguments
-        """
-        return (Review(**data))

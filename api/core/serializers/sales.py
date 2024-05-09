@@ -1,8 +1,7 @@
 #!/usr/bin/python3
 """SaleSchema - Module
 """
-from marshmallow import Schema, fields, post_load
-from models import Sale
+from marshmallow import Schema, fields
 
 
 class SaleSchema(Schema):
@@ -17,13 +16,3 @@ class SaleSchema(Schema):
     updated_at = fields.Str(dump_only=True)
     owner_id = fields.Str(required=True)
     location_id = fields.Str(required=True)
-
-    @post_load
-    def create_sale(self, data, **kwargs) -> None:
-        """create a sale instance in the sales table
-            when the loads method is called on this class and data is valid
-        Args:
-            data: the validated request data
-            kwargs: any other key word arguments
-        """
-        return (Sale(**data))

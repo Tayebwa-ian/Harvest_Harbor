@@ -4,33 +4,37 @@ Module contain app instance
 And all config necessary to run the app
 """
 from flask import Flask, jsonify
-from models import storage
+import models
 from .core.views import core_bp
+from .auth.views import auth_bp
 from os import getenv
 from flask_cors import CORS
+from flask_bcrypt import Bcrypt
 
 
 app = Flask(__name__)
 app.register_blueprint(core_bp)
+app.register_blueprint(auth_bp)
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
+bcrypt = Bcrypt(app)
 
 
 @app.teardown_appcontext
 def teardown(self) -> None:
     """Close the storage session"""
-    storage.close()
+    models.storage.close()
 
 
 @app.errorhandler(404)
 def page_not_found(error):
     """json 404 page"""
-    return(jsonify({"error": "Not found"}))
+    return (jsonify({"error": "Not found"}))
 
 
 @app.errorhandler(400)
 def handle_bad_request(error):
     """json 400 page"""
-    return(jsonify({'error': 'Bad request'}))
+    return (jsonify({'error': 'Bad request'}))
 
 
 if __name__ == "__main__":

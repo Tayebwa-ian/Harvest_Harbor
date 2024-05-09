@@ -3,6 +3,18 @@
 from .base_model import BaseModel, Base
 from sqlalchemy import String, Column, Boolean, Enum
 from sqlalchemy.orm import relationship
+from api.app import bcrypt
+import jwt
+from os import getenv
+import datetime
+import models
+
+
+if getenv('SECRET_KEY'):
+    secret_key = getenv('SECRET_KEY')
+else:
+    secret_key = b'\xb1KW\x82\xea\x06\xeb\xd2\xde\xb20L\x' \
+        b'a4y\xd3\xb0\x92\xd8\xdb\xb9\xf6\x91\x98\xd0'
 
 
 class User(BaseModel, Base):
@@ -39,7 +51,7 @@ class User(BaseModel, Base):
     is_carrier = Column(Boolean, default=False)
     is_market_expert = Column(Boolean, default=False)
     is_farming_expert = Column(Boolean, default=False)
-    status = Column(Enum("acitve", "suspended"),
+    status = Column(String(56), Enum("acitve", "suspended"),
                     default="active")
     reviews = relationship("Review", backref="owner", cascade="delete")
     hubs = relationship("Hub", backref="owner", cascade="delete")
@@ -48,4 +60,72 @@ class User(BaseModel, Base):
 
     def __init__(self, *args, **kwargs):
         """initializes Product class"""
+        if kwargs:
+            kwargs['password'] = bcrypt.generate_password_hash(
+                kwargs['password']).decode()
         super().__init__(*args, **kwargs)
+
+    def encode_auth_token(self, user_id) -> str:
+        """
+        Generates the Auth Token
+        Arg:
+            user_id: ID of the user whose token should be generated
+        return: string
+        """
+        try:
+            payload = {
+                'exp': datetime.datetime.now() +
+                datetime.timedelta(days=0, seconds=900),
+                'iat': datetime.datetime.now(),
+                'sub': user_id
+            }
+            return jwt.encode(
+                payload,
+                key=secret_key,
+                algorithm='HS256'
+            )
+        except Exception as e:
+            return e
+
+    @staticmethod
+    def decode_auth_token(auth_token) -> str:
+        """
+        Validates the auth token
+        param:
+            auth_token - token to decode
+        """
+        try:
+            payload = jwt.decode(auth_token, key=secret_key,
+                                 algorithms=['HS256'])
+            is_blacklisted_token = BlacklistToken.check_blacklist(auth_token)
+            if is_blacklisted_token:
+                return 'Token blacklisted. Please log in again.'
+            else:
+                return payload['sub']
+        except jwt.ExpiredSignatureError:
+            return 'Signature expired. Please log in again.'
+        except jwt.InvalidTokenError:
+            return 'Invalid token. Please log in again.'
+
+
+class BlacklistToken(BaseModel, Base):
+    """
+    Token Model for storing JWT tokens
+    """
+    __tablename__ = 'blacklist_tokens'
+
+    token = Column(String(500), unique=True, nullable=False)
+
+    def __init__(self, *args, **kwargs):
+        """Intialize the BlacklistToken class
+        """
+        super().__init__(*args, **kwargs)
+
+    @staticmethod
+    def check_blacklist(auth_token) -> bool:
+        """check whether auth token has been blacklisted"""
+        res = models.storage.get(BlacklistToken, token=auth_token)
+        if res:
+            return True
+        else:
+            return False

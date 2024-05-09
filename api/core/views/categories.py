@@ -3,11 +3,11 @@
 category Views module
 """
 from flask_restful import Resource
-from models import storage, Category
+import models
 from ..serializers.categories import CategorySchema
 from marshmallow import ValidationError, EXCLUDE
 from flask import request, abort
-import json
+from flask import jsonify
 
 
 category_schema = CategorySchema(unknown=EXCLUDE)
@@ -18,16 +18,21 @@ class CategoryList(Resource):
     """Defines get(for all) and post request of categories"""
     def get(self):
         """retrieve all categories from the storage"""
-        categories = storage.all(Category)
+        categories = models.storage.all(models.Category)
         return (categories_schema.dump(categories), 200)
 
     def post(self):
         """Add a category to the storage"""
         try:
-            data = category_schema.load(request.get_json())
+            data = request.get_json()
+            category_schema.load(data)
         except ValidationError as e:
-            abort(400, "invalid input data")
-        new_category = Category(**data)
+            responseobject = {
+                "status": "fail",
+                "message": e.messages
+            }
+            return jsonify(responseobject)
+        new_category = models.Category(**data)
         new_category.save()
         return (category_schema.dump(new_category), 201)
 
@@ -40,7 +45,7 @@ class CategorySingle(Resource):
     """
     def get(self, cat_id):
         """retrive a single category from the storage"""
-        category = storage.get(Category, id=cat_id)
+        category = models.storage.get(models.Category, id=cat_id)
         if category:
             return (category_schema.dump(category), 200)
 
@@ -49,11 +54,11 @@ class CategorySingle(Resource):
         Arg:
             cat_id: ID of the category to be deleted
         """
-        category = storage.get(Category, id=cat_id)
+        category = models.storage.get(models.Category, id=cat_id)
         if category:
-            storage.delete(category)
+            models.storage.delete(category)
             response = {'message': 'resource successfully deleted'}
-            return (json.dumps(response), 204)
+            return (jsonify(response))
 
     def put(self, cat_id):
         """Make changes to an existing category
@@ -61,13 +66,14 @@ class CategorySingle(Resource):
             cat_id: ID of the category to be changed
         """
         try:
-            data = category_schema.load(request.get_json())
+            data = request.get_json()
+            category_schema.load(data)
         except ValidationError as e:
             abort(400, "invalid input data")
-        category = storage.get(Category, id=cat_id)
+        category = models.storage.get(models.Category, id=cat_id)
         if category:
             for key in data.keys():
                 if hasattr(category, key):
-                    setattr(category, data[key])
-            storage.save()
+                    setattr(category, key, data[key])
+            models.storage.save()
             return (category_schema.dump(category), 200)

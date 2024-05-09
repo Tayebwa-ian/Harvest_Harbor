@@ -7,7 +7,7 @@ from .hubs import Hub
 from .images import Image
 from .sales import Sale
 from .reviews import Review
-from .users import User
+from .users import User, BlacklistToken
 from .locations import Location
 from .products import Product
 from os import getenv

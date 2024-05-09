@@ -116,7 +116,7 @@ class DBStorage:
             final[instance_key] = instance
         return (final)
 
-    def get(self, cls, id=None, **kwargs) -> object:
+    def get(self, cls, id=None, token=None, **kwargs) -> object:
         """retrieve one object based on cls and id
         Args:
             cls: class of the object
@@ -135,6 +135,10 @@ class DBStorage:
                 number = kwargs.get('phone_number')
                 q = self.__session.query(cls).\
                     filter_by(phone_number=number).one_or_none()
+        elif token and cls.__name__ == "BlacklistToken":
+            q = self.__session.query(cls).filter_by(token=token).one_or_none()
+        elif "name" in kwargs.keys() and hasattr(cls, "name"):
+            q = self.__session.query(cls).filter_by(name=kwargs["name"]).all()
         if q:
             return (q)
 

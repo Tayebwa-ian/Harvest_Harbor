@@ -1,17 +1,8 @@
 #!/usr/bin/python3
 """UserSchema - Module
 """
-from marshmallow import Schema, fields, post_load, validates, ValidationError
-from models import User, storage
-from enum import Enum
-
-
-class Status(Enum):
-    """Define possible statuses of a Hub"""
-    ACTIVE = 'active'
-    APPROVED = 'approved'
-    PENDING = 'pending'
-    SUSPENDED = 'suspended'
+from marshmallow import Schema, fields, validates, ValidationError
+import models
 
 
 class UserSchema(Schema):
@@ -26,7 +17,7 @@ class UserSchema(Schema):
     updated_at = fields.Str(dump_only=True)
     email = fields.Str(required=True)
     username = fields.Str(required=True)
-    password = fields.Str(load_only=True)
+    password = fields.Str(load_only=True, required=True)
     phone_number = fields.Str(required=True)
     is_farmer = fields.Bool()
     has_store = fields.Bool()
@@ -36,7 +27,7 @@ class UserSchema(Schema):
     is_carrier = fields.Bool()
     is_market_expert = fields.Bool()
     is_farming_expert = fields.Bool()
-    status = fields.Enum(Status)
+    status = fields.Str()
 
     @validates('email')
     def validate_email(self, value) -> None:
@@ -45,8 +36,8 @@ class UserSchema(Schema):
         Arg:
             value: input value
         """
-        if storage.get(User, email=value):
-            raise ValidationError('Email already exists')
+        if models.storage.get(models.User, email=value):
+            raise ValidationError(f'Email {value} already exists')
 
     @validates('phone_number')
     def validate_phone_number(self, value) -> None:
@@ -55,15 +46,17 @@ class UserSchema(Schema):
         Arg:
             value: input value
         """
-        if storage.get(User, phone_number=value):
-            raise ValidationError('phone number already exists')
+        if models.storage.get(models.User, phone_number=value):
+            raise ValidationError(f'phone number {value} already exists')
 
-    @post_load
-    def create_user(self, data, **kwargs) -> None:
-        """create a user instance in the users table
-            when the loads method is called on this class and data is valid
-        Args:
-            data: the validated request data
-            kwargs: any other key word arguments
+    @validates('status')
+    def validate_status(self, value) -> None:
+        """Validate the input value of the status field
+        Ensure status is among (active, approved, pending and suspended)
+        Arg:
+            value: input value
         """
-        return (User(**data))
+        status_list = ['active', 'suspended', 'approved', 'pending']
+        if value not in status_list:
+            raise ValidationError(
+                f'{value} not among valid statuses({status_list})')

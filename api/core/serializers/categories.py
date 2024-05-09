@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 """CategorySchema - Module
 """
-from marshmallow import Schema, fields, post_load
-from models import Category
+from marshmallow import Schema, fields, ValidationError, validates
+import models
 
 
 class CategorySchema(Schema):
@@ -19,12 +19,13 @@ class CategorySchema(Schema):
     description = fields.Str(required=True)
     category_id = fields.Str()
 
-    @post_load
-    def create_category(self, data, **kwargs) -> None:
-        """create a category instance in the categories table
-            when the loads method is called on this class and data is valid
-        Args:
-            data: the validated request data
-            kwargs: any other key word arguments
+    @validates('name')
+    def validate_name(self, value) -> None:
+        """Validate the input value of the name field
+        Ensure no category exists in the storage with the same name
+        Arg:
+            value: input value
         """
-        return (Category(**data))
+        query_object = models.storage.get(models.Category, name=value)
+        if query_object and len(query_object) >= 1:
+            raise ValidationError(f'{value} category already exists')

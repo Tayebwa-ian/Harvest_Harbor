@@ -13,7 +13,7 @@ class Category(BaseModel, Base):
         category_id: ID of the category in which the category falls under
     """
     __tablename__ = 'categories'
-    name = Column(String(128), nullable=False)
+    name = Column(String(128), nullable=False, unique=True)
     description = Column(String(256), nullable=True)
     category_id = Column(String(60), ForeignKey("categories.id"),
                          nullable=True)

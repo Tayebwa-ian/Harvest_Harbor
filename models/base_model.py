@@ -9,7 +9,6 @@ from uuid import uuid4
 from datetime import datetime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import String, Column, DateTime
-from os import getenv
 
 
 Base = declarative_base()
@@ -86,8 +85,6 @@ class BaseModel:
     def __str__(self) -> str:
         """Return string representation of the object"""
         self_dict = self.__dict__
-        if "_sa_instance_state" in self_dict:
-            del self_dict['_sa_instance_state']
         rep = "[{}] ({}) {}".format(self.__class__.__name__,
                                     self.id, self_dict)
         return (rep)

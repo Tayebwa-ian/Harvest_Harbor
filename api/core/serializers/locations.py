@@ -1,8 +1,7 @@
 #!/usr/bin/python3
 """LocationSchema - Module
 """
-from marshmallow import Schema, fields, post_load
-from models import Location
+from marshmallow import Schema, fields
 
 
 class LocationSchema(Schema):
@@ -26,13 +25,3 @@ class LocationSchema(Schema):
     is_default = fields.Bool()
     onwer_id = fields.Str()
     hub_id = fields.Str()
-
-    @post_load
-    def create_location(self, data, **kwargs) -> None:
-        """create a location instance in the locations table
-            when the loads method is called on this class and data is valid
-        Args:
-            data: the validated request data
-            kwargs: any other key word arguments
-        """
-        return (Location(**data))

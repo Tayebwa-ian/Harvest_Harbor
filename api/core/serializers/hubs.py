@@ -1,8 +1,7 @@
 #!/usr/bin/python3
 """HubSchema - Module
 """
-from marshmallow import Schema, fields, post_load
-from models import Hub
+from marshmallow import Schema, fields
 from enum import Enum
 
 
@@ -38,13 +37,3 @@ class HubSchema(Schema):
     rank = fields.Enum(Rank)
     location_id = fields.Str(required=True)
     owner_id = fields.Str(required=True)
-
-    @post_load
-    def create_hub(self, data, **kwargs) -> None:
-        """create a hub instance in the hubs table
-            when the loads method is called on this class and data is valid
-        Args:
-            data: the validated request data
-            kwargs: any other key word arguments
-        """
-        return (Hub(**data))

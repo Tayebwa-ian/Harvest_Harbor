@@ -1,8 +1,7 @@
 #!/usr/bin/python3
 """productSchema - Module
 """
-from marshmallow import Schema, fields, post_load
-from models import Product
+from marshmallow import Schema, fields
 
 
 class ProductSchema(Schema):
@@ -22,13 +21,3 @@ class ProductSchema(Schema):
     unit_price = fields.Float()
     cat_id = fields.Str(required=True)
     hub_id = fields.Str(required=True)
-
-    @post_load
-    def create_location(self, data, **kwargs) -> None:
-        """create a product instance in the products table
-            when the loads method is called on this class and data is valid
-        Args:
-            data: the validated request data
-            kwargs: any other key word arguments
-        """
-        return (Product(**data))
