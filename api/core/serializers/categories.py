@@ -3,6 +3,7 @@
 """
 from marshmallow import Schema, fields, ValidationError, validates
 import models
+from flask import request
 
 
 class CategorySchema(Schema):
@@ -26,6 +27,7 @@ class CategorySchema(Schema):
         Arg:
             value: input value
         """
-        query_object = models.storage.get(models.Category, name=value)
-        if query_object and len(query_object) >= 1:
-            raise ValidationError(f'{value} category already exists')
+        if request.method == "POST":
+            query_object = models.storage.get(models.Category, name=value)
+            if query_object and len(query_object) >= 1:
+                raise ValidationError(f'{value} category already exists')

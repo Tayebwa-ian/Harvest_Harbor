@@ -8,6 +8,8 @@ from ..serializers.categories import CategorySchema
 from marshmallow import ValidationError, EXCLUDE
 from flask import request, abort
 from flask import jsonify
+from utilities.utils import auth_required
+from datetime import datetime
 
 
 category_schema = CategorySchema(unknown=EXCLUDE)
@@ -21,6 +23,7 @@ class CategoryList(Resource):
         categories = models.storage.all(models.Category)
         return (categories_schema.dump(categories), 200)
 
+    @auth_required
     def post(self):
         """Add a category to the storage"""
         try:
@@ -49,6 +52,7 @@ class CategorySingle(Resource):
         if category:
             return (category_schema.dump(category), 200)
 
+    @auth_required
     def delete(self, cat_id):
         """Delete category
         Arg:
@@ -60,6 +64,7 @@ class CategorySingle(Resource):
             response = {'message': 'resource successfully deleted'}
             return (jsonify(response))
 
+    @auth_required(roles=["is_farmer"])
     def put(self, cat_id):
         """Make changes to an existing category
         Arg:
@@ -69,11 +74,16 @@ class CategorySingle(Resource):
             data = request.get_json()
             category_schema.load(data)
         except ValidationError as e:
-            abort(400, "invalid input data")
+            responseobject = {
+                "status": "Input data invalid",
+                "message": e.messages
+            }
+            return jsonify(responseobject)
         category = models.storage.get(models.Category, id=cat_id)
         if category:
             for key in data.keys():
                 if hasattr(category, key):
                     setattr(category, key, data[key])
+            category.updated_at = datetime.now()
             models.storage.save()
             return (category_schema.dump(category), 200)

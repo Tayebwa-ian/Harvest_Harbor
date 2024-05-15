@@ -8,14 +8,14 @@ HH_ENV=dev HH_MYSQL_USER=hh_dev HH_MYSQL_PWD=hh_dev_pwd HH_MYSQL_HOST=localhost 
 ```
 curl -s -H "Content-Type: application/json" -X POST -d '{"name":"fruits", "description":"Fresh succulent fruits" }' http://127.0.0.1:5000/api/core/categories  
 {
-    "id": "30311a6a-8719-49ce-a3e4-e364f0e42505",
-    "created_at": "2024-05-09 03:47:10.406516",
-    "updated_at": "2024-05-09 03:47:10.406543",
+    "id": "c4b5d890-9041-4344-951b-87089f02dc55",
+    "created_at": "2024-05-09 18:45:46.282804",
+    "updated_at": "2024-05-09 18:45:46.282842",
     "name": "fruits",
-    "description": "Fresh succulent fruits",
+    "description": "fresh succulent fruits",
     "category_id": null
 }  
-  
+   
 curl -s http://127.0.0.1:5000/api/core/categories/30311a6a-8719-49ce-a3e4-e364f0e42505  
  {
     "id": "30311a6a-8719-49ce-a3e4-e364f0e42505",
@@ -74,5 +74,24 @@ curl -s -X GET -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.ey
   "status": "fail"
 }  
   
-
+ curl -s -X GET -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MTU3NjE4NjksImlhdCI6MTcxNTc2MDk2OSwic3ViIjoiYjJiZDMxNDYtNGM0My00NzllLWI5N2MtNDBiMjgzZDliODMzIn0.vt-99oJ0uq97z-9AiA6rZRa3DJeS7xrWHFXs3iRHYdY" http://127.0.0.1:5000/api/core/categories/f7cbd8e1-388d-4af6-ac59-754c4147e0fe  
+ {
+    "id": "f7cbd8e1-388d-4af6-ac59-754c4147e0fe",
+    "created_at": "2024-05-09 13:52:11",
+    "updated_at": "2024-05-09 13:52:11",
+    "name": "vegetables",
+    "description": "Fresh garden vegetables",
+    "category_id": null
+}  
+  
+curl -s -X POST -H "Content-Type: application/json" -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MTU3NjM2MDksImlhdCI6MTcxNTc2MjcwOSwic3ViIjoiYjJiZDMxNDYtNGM0My00NzllLWI5N2MtNDBiMjgzZDliODMzIn0.mEgIjObiUDiEF3ZfLbSfmeArk6DU--BvQRrs2-dRmbY" -d '{"name":"avocado", "description":"Avocados of all types", "category_id":"c4b5d890-9041-4344-951b-87089f02dc55"}' http://127.0.0.1:5000
+/api/core/categories  
+{
+    "id": "5bc42a48-af8e-4d76-b59a-cf5ce9cee4d8",
+    "created_at": "2024-05-15 08:59:34.416854",
+    "updated_at": "2024-05-15 08:59:34.416907",
+    "name": "avocado",
+    "description": "Avocados of all types",
+    "category_id": "c4b5d890-9041-4344-951b-87089f02dc55"
+}  
 ```
