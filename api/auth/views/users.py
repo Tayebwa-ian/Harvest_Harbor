@@ -36,7 +36,6 @@ class RegisterUser(Resource):
             "email": new_user.email,
             "phone_number": new_user.phone_number,
             "is_admin": new_user.is_admin,
-            "password": new_user.password
         }
         return make_response(jsonify(responseObject), 201)
 
