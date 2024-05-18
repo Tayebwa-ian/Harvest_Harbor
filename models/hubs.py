@@ -20,7 +20,7 @@ class Hub(BaseModel, Base):
             possible ranks are regular, star and diamond
     """
     __tablename__ = 'hubs'
-    name = Column(String(128), nullable=False)
+    name = Column(String(128), nullable=False, unique=True)
     description = Column(String(256), nullable=False)
     is_bulk_seller = Column(Boolean, default=False)
     is_retailer = Column(Boolean, default=False)

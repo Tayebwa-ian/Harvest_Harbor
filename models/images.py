@@ -14,7 +14,7 @@ class Image(BaseModel, Base):
         hub_id: hub to which the image belongs
     """
     __tablename__ = 'images'
-    link = Column(String(128), nullable=False)
+    link = Column(String(128), nullable=False, unique=True)
     product_id = Column(String(60), ForeignKey("products.id"), nullable=True)
     hub_id = Column(String(60), ForeignKey("hubs.id"), nullable=True)
 

@@ -21,3 +21,5 @@ class ProductSchema(Schema):
     unit_price = fields.Float()
     cat_id = fields.Str(required=True)
     hub_id = fields.Str(required=True)
+    reviews = fields.List()
+    images = fields.List()

@@ -19,3 +19,9 @@ from .sales import *
 
 core_api.add_resource(CategoryList, '/categories')
 core_api.add_resource(CategorySingle, '/categories/<cat_id>')
+core_api.add_resource(HubList, '/<user_id>/hubs')
+core_api.add_resource(HubSingle, '/hubs/<hub_id>')
+core_api.add_resource(HubAll, '/hubs')
+core_api.add_resource(ImageHubList, '/<hub_id>/images')
+core_api.add_resource(ImageProductList, '/<product_id>/images')
+core_api.add_resource(ImageSingle, '/images/<image_id>')

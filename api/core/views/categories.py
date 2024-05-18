@@ -6,9 +6,8 @@ from flask_restful import Resource
 import models
 from ..serializers.categories import CategorySchema
 from marshmallow import ValidationError, EXCLUDE
-from flask import request
-from flask import jsonify
-from utilities.utils import auth_required
+from flask import request, jsonify
+from utilities.auth_utils import auth_required
 from datetime import datetime
 
 
