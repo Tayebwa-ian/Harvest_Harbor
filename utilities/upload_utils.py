@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 """Images Upload Utility Module"""
 from flask import request, jsonify, make_response
 from werkzeug.utils import secure_filename
