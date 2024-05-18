@@ -44,7 +44,8 @@ def upload_image(hub_id=None, product_id=None):
         if hub_id:
             new_image = models.Image(hub_id=hub_id, link=new_filename)
         if product_id:
-            new_image = models.Image(product_id_id=product_id, link=new_filename)
+            new_image = models.Image(product_id_id=product_id,
+                                     link=new_filename)
         new_image.save()
         return (image_schema.dump(new_image), 201)
     except Exception as e:
