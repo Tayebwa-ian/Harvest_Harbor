@@ -6,7 +6,7 @@ from functools import wraps
 
 
 def auth_required(roles=[]):
-    """checks if the user is authenticate
+    """checks if the user is authentic
     Arg:
         roles: list of roles assigned to a specific user
     """
