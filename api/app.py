@@ -3,7 +3,7 @@
 Module contain app instance
 And all config necessary to run the app
 """
-from flask import Flask, jsonify
+from flask import Flask, jsonify, g
 import models
 from .core.views import core_bp
 from .auth.views import auth_bp
@@ -35,6 +35,12 @@ def page_not_found(error):
 def handle_bad_request(error):
     """json 400 page"""
     return (jsonify({'error': 'Bad request'}))
+
+
+@app.teardown_request
+def teardown_request(exception=None):
+    """Clean up g after each request"""
+    g.pop('user', None)
 
 
 if __name__ == "__main__":

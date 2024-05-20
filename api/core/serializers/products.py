@@ -2,6 +2,8 @@
 """productSchema - Module
 """
 from marshmallow import Schema, fields
+from .reviews import ReviewSchema
+from .images import ImageSchema
 
 
 class ProductSchema(Schema):
@@ -17,9 +19,9 @@ class ProductSchema(Schema):
     name = fields.Str(required=True)
     description = fields.Str(required=True)
     sell_volume = fields.Str(required=True)
-    quantities = fields.Float()
+    quantities = fields.Integer()
     unit_price = fields.Float()
     cat_id = fields.Str(required=True)
     hub_id = fields.Str(required=True)
-    reviews = fields.List()
-    images = fields.List()
+    reviews = fields.List(fields.Nested(ReviewSchema))
+    images = fields.List(fields.Nested(ImageSchema))

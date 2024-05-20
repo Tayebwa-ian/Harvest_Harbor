@@ -9,7 +9,7 @@ from models.categories import Category
 from models.hubs import Hub
 from models.users import User
 from models.products import Product
-from models.sales import Sale
+from models.sales import Purchase, SoldProduct
 from models.reviews import Review
 from models.images import Image
 from models.locations import Location
@@ -30,8 +30,9 @@ class DBStorage:
         "Hub": Hub,
         "Image": Image,
         "product": Product,
-        "Sale": Sale,
+        "Sale": Purchase,
         "Review": Review,
+        "SoldProduct": SoldProduct,
         }
 
     def __init__(self):

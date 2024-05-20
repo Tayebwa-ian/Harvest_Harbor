@@ -55,7 +55,7 @@ class User(BaseModel, Base):
                     default="active")
     reviews = relationship("Review", backref="owner", cascade="delete")
     hubs = relationship("Hub", backref="owner", cascade="delete")
-    sales = relationship("Sale", backref="owner", cascade="delete")
+    purchases = relationship("Purchase", backref="owner", cascade="delete")
     locations = relationship("Location", backref="owner", cascade="delete")
 
     def __init__(self, *args, **kwargs):

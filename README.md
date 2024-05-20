@@ -1,6 +1,8 @@
 # Harvest Harbor  
 Harvest harbor is a tech tool aimed at bridging the gap between farm produce and consumers especially in Africa. Ultimately, the goal is to minimize wastage of farm produce and provide a platform to swiftly access affordable quality Agric products  
 ## Run app with Development Database  
+Create a development database from the sql script in the project directory  
+  
 ```
 HH_ENV=dev HH_MYSQL_USER=hh_dev HH_MYSQL_PWD=hh_dev_pwd HH_MYSQL_HOST=localhost HH_MYSQL_DB=hh_dev_db python3 -m api.app
 ```
@@ -34,6 +36,15 @@ curl -s http://127.0.0.1:5000/api/core/categories/30311a6a-8719-49ce-a3e4-e364f0
     ]
   },
   "status": "fail"
+}  
+  
+curl -s -X POST -H "Content-Type: application/json" -d '{"email":"kumuqc5@gmail.com", "password":"hello@123", "phone_number":"+256785112596", "username":"Jacqueline", "is_farmer":"true"}' http://127.0.0.1:5000/api/auth/register  
+{
+  "email": "kumuqc5@gmail.com",
+  "id": "6bd44a17-af0d-4d0c-8299-8087aad2f431",
+  "is_admin": false,
+  "phone_number": "+256785112596",
+  "username": "Jacqueline"
 }  
   
 curl -s -X POST -H "Content-Type: application/json" -d '{"email":"markj@gmail.com", "password":"jambo@123"}' http://127.0.0.1:5000/api/auth/login  

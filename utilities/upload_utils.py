@@ -5,7 +5,7 @@ from werkzeug.utils import secure_filename
 import secrets
 import os
 import models
-from ..api.core.serializers.images import ImageSchema
+from api.core.serializers.images import ImageSchema
 from marshmallow import EXCLUDE
 
 

@@ -5,7 +5,7 @@ from .base_model import BaseModel
 from .categories import Category
 from .hubs import Hub
 from .images import Image
-from .sales import Sale
+from .sales import Purchase, SoldProduct
 from .reviews import Review
 from .users import User, BlacklistToken
 from .locations import Location

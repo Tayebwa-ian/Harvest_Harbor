@@ -21,7 +21,7 @@ class RegisterUser(Resource):
         """Add a user to the storage"""
         try:
             data = request.get_json()
-            user_schema.load(data)
+            data = user_schema.load(data)
         except ValidationError as e:
             responseObject = {
                 'status': 'fail',

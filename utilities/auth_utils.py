@@ -1,9 +1,20 @@
 #!/usr/bin/python3
 """Project utilities Module"""
-from flask import request, make_response, jsonify
+from flask import request, make_response, jsonify, g
 import models
 from functools import wraps
 
+
+def check_roles(roles, user_obj) -> bool:
+    """Checks if the user fullfills certain roles
+    Args:
+        roles: a list of roles allowed to access a particular endpoint
+        user_obj: the user object to check for the roles
+    """
+    for role in roles:
+        if getattr(user_obj, role, None):
+            return True
+    return False
 
 def auth_required(roles=[]):
     """checks if the user is authentic
@@ -33,10 +44,13 @@ def auth_required(roles=[]):
                 if isinstance(resp, str):
                     user = models.storage.get(models.User, id=resp)
                     if user:
-                        if len(roles) > 0 and all(
-                                getattr(user, i, None) for i in roles):
+                        if len(roles) > 0 and check_roles(roles, user):
+                            # storing user object in g for future use
+                            g.user = user
                             return func(*args, **kwargs)
                         elif len(roles) == 0:
+                            # storing user object in g for future use
+                            g.user = user
                             return func(*args, **kwargs)
                         else:
                             responseObject = {
@@ -59,3 +73,13 @@ def auth_required(roles=[]):
                     return make_response(jsonify(responseObject), 401)
         return wrapper
     return inner_function
+
+def get_current_user() -> object:
+    """Retrieve current user from global object
+    Return: a user object or None
+    """
+    try:
+        user = g.user
+    except AttributeError as e:
+        return None
+    return user

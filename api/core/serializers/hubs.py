@@ -3,6 +3,7 @@
 """
 from marshmallow import Schema, fields, validates, ValidationError
 import models
+from flask import request
 
 
 class HubSchema(Schema):
@@ -16,6 +17,7 @@ class HubSchema(Schema):
     created_at = fields.Str(dump_only=True)
     updated_at = fields.Str(dump_only=True)
     name = fields.Str(required=True)
+    description = fields.Str(required=True)
     is_bulk_seller = fields.Bool()
     is_retailer = fields.Bool()
     status = fields.Str()
@@ -53,5 +55,6 @@ class HubSchema(Schema):
         Arg:
             value: input value
         """
-        if models.storage.get(models.Hub, name=value):
-            raise ValidationError(f'Hub {value} already exists')
+        if request.method == 'POST':
+            if models.storage.get(models.Hub, name=value):
+                raise ValidationError(f'Hub {value} already exists')

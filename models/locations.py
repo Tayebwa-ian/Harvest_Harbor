@@ -34,7 +34,7 @@ class Location(BaseModel, Base):
     is_default = Column(Boolean, default=False)
     owner_id = Column(String(60), ForeignKey("users.id"), nullable=True)
     hub_id = Column(String(60), ForeignKey("hubs.id"), nullable=True)
-    sales = relationship("Sale", backref="location", cascade="delete")
+    purchases = relationship("Purchase", backref="location", cascade="delete")
 
     def __init__(self, *args, **kwargs):
         """initializes Location class"""
