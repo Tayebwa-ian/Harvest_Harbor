@@ -10,8 +10,6 @@ class ProductSchema(Schema):
     """A Product schema
     Responsible for: -serialization/deserialization
                      -Data validation
-                     -add data to the products table
-                     using the load method and the post_load decorator
     """
     id = fields.Str(dump_only=True)
     created_at = fields.Str(dump_only=True)
@@ -19,8 +17,8 @@ class ProductSchema(Schema):
     name = fields.Str(required=True)
     description = fields.Str(required=True)
     sell_volume = fields.Str(required=True)
-    quantities = fields.Integer()
-    unit_price = fields.Float()
+    quantities = fields.Integer(required=True)
+    unit_price = fields.Float(required=True)
     cat_id = fields.Str(required=True)
     hub_id = fields.Str(required=True)
     reviews = fields.List(fields.Nested(ReviewSchema))

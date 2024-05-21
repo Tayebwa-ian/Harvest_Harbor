@@ -19,24 +19,22 @@ class ImageHubList(Resource):
     """Defines get(for all) related to a hub
         and post request of images
     """
-    @auth_required(roles=['is_farmer', 'is_admin'])
     def get(self, hub_id):
         """retrieve all images related to a hub"""
         hub = models.storage.get(models.Hub, id=hub_id)
         images = hub.images
-        return make_response(jsonify(images), 200)
+        return (images_schema.dump(images), 200)
 
-    @auth_required(roles=['is_farmer'])
+    @auth_required(roles=['is_farmer', 'is_admin'])
     def post(self, hub_id):
         """Add an image to the storage"""
-        upload_image(hub_id=hub_id)
+        return upload_image(hub_id=hub_id)
 
 
 class ImageProductList(Resource):
     """Defines get(for all) related to a product
         and post request of images
     """
-    @auth_required(roles=['is_farmer', 'is_admin'])
     def get(self, product_id):
         """retrieve all images related to a product
         Arg:
@@ -44,18 +42,17 @@ class ImageProductList(Resource):
         """
         product = models.storage.get(models.Product, id=product_id)
         images = product.images
-        return make_response(jsonify(images), 200)
+        return (images_schema.dump(images), 200)
 
-    @auth_required(roles=['is_farmer'])
+    @auth_required(roles=['is_farmer', 'is_admin'])
     def post(self, product_id):
         """Add an image to the storage"""
-        upload_image(product_id=product_id)
+        return upload_image(product_id=product_id)
 
 
 class ImageSingle(Resource):
     """Retrieves a single image, deletes a image
     """
-    @auth_required(roles=['is_farmer', 'is_admin'])
     def get(self, image_id):
         """retrive a single image from the storage
         Arg:

@@ -13,7 +13,7 @@ image_schema = ImageSchema(unknown=EXCLUDE)
 if os.getenv("UPLOAD_FOLDER"):
     upload_folder = os.getenv("UPLOAD_FOLDER")
 else:
-    upload_folder = '..../static/images'
+    upload_folder = 'static/images'
 
 
 def upload_image(hub_id=None, product_id=None):
@@ -44,7 +44,7 @@ def upload_image(hub_id=None, product_id=None):
         if hub_id:
             new_image = models.Image(hub_id=hub_id, link=new_filename)
         if product_id:
-            new_image = models.Image(product_id_id=product_id,
+            new_image = models.Image(product_id=product_id,
                                      link=new_filename)
         new_image.save()
         return (image_schema.dump(new_image), 201)
@@ -63,7 +63,7 @@ def delete_image(filename):
 
         # Check if file exists
         if not os.path.exists(filepath):
-            return jsonify({'error': 'File not found'}), 404
+            return make_response(jsonify({'error': 'File not found'}), 404)
 
         # Delete the image file
         os.remove(filepath)

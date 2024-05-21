@@ -105,4 +105,39 @@ curl -s -X POST -H "Content-Type: application/json" -H "Authorization: Bearer ey
     "description": "Avocados of all types",
     "category_id": "c4b5d890-9041-4344-951b-87089f02dc55"
 }  
+  
+curl -s -X GET -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MTYzMTA5NzAsImlhdCI6MTcxNjMxMDA3MCwic3ViIjoiNmJkNDRhMTctYWYwZC00ZDBjLTgyOTktODA4N2FhZDJmNDMxIn0.4U_TMeWM91YAv-U2tp7LUiKR2amjWEUGmvBtOASVaU0" -H "Content-Type: application/json" -X POST -d '{"name":"Avocados", "cat_id":"445191c8-1c2c-4bea-91b7-2133b4d2db04", "description":"A type that is rare", "sell_volume":"kilos"}' http://127.0.0.1:5000/api/core/7045c3a5-0b10-4b97-b327-ace2b04ea772/products  
+{
+    "id": "3f6ca394-3aa8-48f7-82de-5bcce06da256",
+    "created_at": "2024-05-21 16:55:47.927836",
+    "updated_at": "2024-05-21 16:55:47.927882",
+    "name": "Avocados",
+    "description": "A type that is rare",
+    "sell_volume": "kilos",
+    "quantities": 0,
+    "unit_price": 0.0,
+    "cat_id": "445191c8-1c2c-4bea-91b7-2133b4d2db04",
+    "hub_id": "7045c3a5-0b10-4b97-b327-ace2b04ea772",
+    "reviews": [],
+    "images": []
+}  
+  
+curl -s -X GET -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MTYzMTA5NzAsImlhdCI6MTcxNjMxMDA3MCwic3ViIjoiNmJkNDRhMTctYWYwZC00ZDBjLTgyOTktODA4N2FhZDJmNDMxIn0.4U_TMeWM91YAv-U2tp7LUiKR2amjWEUGmvBtOASVaU0" -H "Content-Type: application/json" -X PUT -d '{"name":"Avocados", "cat_id":"445191c8-1c2c-4bea-91b7-2133b4d2db04", "description":"A type that is rare", "sell_volume":"kilos", "quantities":"40", "unit_price":"2000", "hub_id":"7045c3a5-0b10-4b97-b327-ace2b04ea772"}' http://127.0.0.1:5000/api/core/products/3f6ca394-3aa8
+-48f7-82de-5bcce06da256  
+{
+    "id": "3f6ca394-3aa8-48f7-82de-5bcce06da256",
+    "created_at": "2024-05-21 16:55:48",
+    "updated_at": "2024-05-21 17:03:25.856332",
+    "name": "Avocados",
+    "description": "A type that is rare",
+    "sell_volume": "kilos",
+    "quantities": 40,
+    "unit_price": 2000.0,
+    "cat_id": "445191c8-1c2c-4bea-91b7-2133b4d2db04",
+    "hub_id": "7045c3a5-0b10-4b97-b327-ace2b04ea772",
+    "reviews": [],
+    "images": []
+}  
+  
+
 ```

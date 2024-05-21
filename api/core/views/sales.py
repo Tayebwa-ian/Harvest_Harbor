@@ -4,7 +4,7 @@ Cart and Purchases Views module
 """
 from flask_restful import Resource
 import models
-from ..serializers.sales import SoldProductSchema
+from ..serializers.sales import SoldProductSchema, PurchaseSchema
 from marshmallow import ValidationError, EXCLUDE
 from flask import request, make_response, jsonify
 from utilities.auth_utils import auth_required, get_current_user
@@ -13,6 +13,8 @@ from datetime import datetime
 
 sold_product_schema = SoldProductSchema(unknown=EXCLUDE)
 sold_products_schema = SoldProductSchema(many=True)
+purchase_schema = PurchaseSchema(unknown=EXCLUDE)
+purchases_schema = PurchaseSchema(many=True)
 
 
 def is_cart_closed(purchases) -> object:
@@ -28,7 +30,7 @@ def is_cart_closed(purchases) -> object:
 
 class UserPurchasesList(Resource):
     """Defines get(for all) """
-    @auth_required
+    @auth_required()
     def get(self):
         """
         retrieve all purchases related to a praticular user
@@ -37,14 +39,14 @@ class UserPurchasesList(Resource):
         Note: A purchase is an open cart is the is_closed attr is false
         """
         user = get_current_user()
-        if not user.admin:
+        if not user.is_admin:
             purchases = user.purchases
-            return make_response(jsonify(purchases), 200)
+            return (purchases_schema.dump(purchases), 200)
         else:
             purchases = models.storage.all(models.Purchase)
-            return make_response(jsonify(purchases), 200)
+            return (purchases_schema.dump(purchases), 200)
 
-    @auth_required
+    @auth_required()
     def post(self):
         """Create cart if it does not exist
         and add items to the purchase
@@ -53,7 +55,7 @@ class UserPurchasesList(Resource):
         user_id = user.id
         purchases = user.purchases
         purchase = is_cart_closed(purchases=purchases)
-        if len(purchases) > 0 and purchase:
+        if not purchase:
             cart = models.Purchase(owner_id=user_id)
             cart.save()
         else:
@@ -69,14 +71,24 @@ class UserPurchasesList(Resource):
                 "message": e.messages
             }
             return make_response(jsonify(responseobject), 400)
+        product = models.storage.get(models.Product, id=data['product_id'])
+        if data['quantities'] < 1 or data['quantities'] > product.quantities:
+            responseobject = {
+                'status': 'fail',
+                'message': f"quantities must be equal to" +
+                f"or less than {product.quantities}"
+            }
+            return make_response(jsonify(responseobject), 401)
         for pdt in cart.sold_products:
-            if pdt.id == data['product_id']:
+            if pdt.product_id == data['product_id']:
                 responseobject = {
                     'status': 'warning',
                     'message': 'This product already exists on cart,' +
                     'simply adjust its quantities in the cart',
                 }
-                return make_response(jsonify(responseobject), 200)
+                return make_response(jsonify(responseobject), 401)
+        product.quantities -= data['quantities']
+        models.storage.save()
         sold_product = models.SoldProduct(**data)
         sold_product.save()
         return (sold_product_schema.dump(sold_product), 201)
@@ -86,7 +98,7 @@ class CartProductsSingle(Resource):
     """Retrieves a single sold_product, deletes a sold_product
         and makes changes to an exisiting sold_product
     """
-    @auth_required
+    @auth_required()
     def get(self, sold_pdt_id):
         """retrive a single sold_product from the storage
         Arg:
@@ -96,7 +108,7 @@ class CartProductsSingle(Resource):
         if sold_pdt:
             return (sold_product_schema.dump(sold_pdt), 200)
 
-    @auth_required
+    @auth_required()
     def delete(self, sold_pdt_id):
         """Delete sold_product
         Arg:
@@ -113,7 +125,7 @@ class CartProductsSingle(Resource):
             response = {'message': 'resource successfully deleted'}
             return make_response(jsonify(response), 200)
 
-    @auth_required
+    @auth_required()
     def put(self, sold_pdt_id):
         """Make changes to an existing sold_product that is already on cart
         Arg:
@@ -123,7 +135,6 @@ class CartProductsSingle(Resource):
         product = models.storage.get(models.Product, id=sold_pdt.product_id)
         # take back the sold quantities into hub
         product.quantities += sold_pdt.quantities
-        models.storage.save()
 
         try:
             data = request.get_json()
@@ -134,6 +145,15 @@ class CartProductsSingle(Resource):
                 "message": e.messages
             }
             return make_response(jsonify(responseobject), 400)
+        if data['quantities'] < 1 or data['quantities'] > product.quantities:
+            responseobject = {
+                'status': 'fail',
+                'message': f"quantities must be equal to" +
+                f"or less than {product.quantities}"
+            }
+            return make_response(jsonify(responseobject), 401)
+        product.quantities -= data['quantities']
+        models.storage.save()
         if sold_pdt:
             for key in data.keys():
                 if hasattr(sold_pdt, key):

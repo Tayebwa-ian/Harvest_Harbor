@@ -10,8 +10,6 @@ class CategorySchema(Schema):
     """A category schema
     Responsible for: -serialization/deserialization
                      -Data validation
-                     -add data to the categories table
-                     using the load method and the post_load decorator
     """
     id = fields.Str(dump_only=True)
     created_at = fields.Str(dump_only=True)

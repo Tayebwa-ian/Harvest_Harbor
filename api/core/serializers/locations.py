@@ -8,8 +8,6 @@ class LocationSchema(Schema):
     """A Location schema
     Responsible for: -serialization/deserialization
                      -Data validation
-                     -add data to the locations table
-                     using the load method and the post_load decorator
     """
     id = fields.Str(dump_only=True)
     created_at = fields.Str(dump_only=True)
@@ -23,5 +21,5 @@ class LocationSchema(Schema):
     longtitude = fields.Float()
     latitude = fields.Float()
     is_default = fields.Bool()
-    onwer_id = fields.Str()
+    owner_id = fields.Str()
     hub_id = fields.Str()

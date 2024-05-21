@@ -42,7 +42,7 @@ class ProductHubList(Resource):
                 "message": e.messages
             }
             return make_response(jsonify(responseobject), 400)
-        new_product = models.product(**data)
+        new_product = models.Product(**data)
         new_product.save()
         return (product_schema.dump(new_product), 201)
 

@@ -21,7 +21,7 @@ def auth_required(roles=[]):
     Arg:
         roles: list of roles assigned to a specific user
     """
-    def inner_function(func):
+    def inner_function(func, *args, **kwargs):
         """Takes the original function as an arg and pass it down"""
         @wraps(func)
         def wrapper(*args, **kwargs):

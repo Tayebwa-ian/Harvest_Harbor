@@ -9,8 +9,6 @@ class ImageSchema(Schema):
     """A Image schema
     Responsible for: -serialization/deserialization
                      -Data validation
-                     -add data to the images table
-                     using the load method and the post_load decorator
     """
     id = fields.Str(dump_only=True)
     created_at = fields.Str(dump_only=True)

@@ -10,8 +10,6 @@ class HubSchema(Schema):
     """A hub schema
     Responsible for: -serialization/deserialization
                      -Data validation
-                     -add data to the hubs table
-                     using the load method and the post_load decorator
     """
     id = fields.Str(dump_only=True)
     created_at = fields.Str(dump_only=True)
