@@ -25,7 +25,7 @@ class Hub(BaseModel, Base):
     is_bulk_seller = Column(Boolean, default=False)
     is_retailer = Column(Boolean, default=False)
     owner_id = Column(String(60), ForeignKey("users.id"), nullable=False)
-    status = Column(Enum("acitve", "approved", "pending", "suspended"),
+    status = Column(Enum("active", "approved", "pending", "suspended"),
                     default="pending")
     rank = Column(Enum("regular", "star", "diamond"), default="regular")
     products = relationship("Product", backref="hub", cascade="delete")
