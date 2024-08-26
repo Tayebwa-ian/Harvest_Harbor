@@ -3,6 +3,7 @@
 from flask import request, make_response, jsonify, g
 import models
 from functools import wraps
+from uuid import UUID
 
 
 def check_roles(roles, user_obj) -> bool:
@@ -41,7 +42,8 @@ def auth_required(roles=[]):
                 auth_token = ''
             if auth_token:
                 resp = models.User.decode_auth_token(auth_token)
-                if isinstance(resp, str):
+                try:
+                    UUID(resp)
                     user = models.storage.get(models.User, id=resp)
                     if user:
                         if len(roles) > 0 and check_roles(roles, user):
@@ -65,10 +67,10 @@ def auth_required(roles=[]):
                             'message': 'No user with such credentials'
                         }
                         return make_response(jsonify(responseObject), 401)
-                else:
+                except ValueError:
                     responseObject = {
                         'status': 'Authentication fail',
-                        'message': 'Invalid token'
+                        'message': resp
                     }
                     return make_response(jsonify(responseObject), 401)
         return wrapper

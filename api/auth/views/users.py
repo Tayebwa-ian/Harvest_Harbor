@@ -9,7 +9,7 @@ from marshmallow import ValidationError, EXCLUDE
 from flask import request
 from flask import jsonify, make_response
 import api
-
+from uuid import UUID
 
 user_schema = UserSchema(unknown=EXCLUDE)
 
@@ -86,15 +86,17 @@ class UserStatus(Resource):
             auth_token = ''
         if auth_token:
             resp = models.User.decode_auth_token(auth_token)
-            if isinstance(resp, str):
+            try:
+                UUID(resp)
                 user = models.storage.get(models.User, id=resp)
                 if user:
                     return (user_schema.dump(user), 200)
-            responseObject = {
-                'status': 'fail',
-                'message': resp
-            }
-            return make_response(jsonify(responseObject), 401)
+            except ValueError:
+                responseObject = {
+                    'status': 'fail',
+                    'message': resp
+                }
+                return make_response(jsonify(responseObject), 401)
         else:
             responseObject = {
                 'status': 'fail',
@@ -116,7 +118,8 @@ class LogoutUser(Resource):
             auth_token = ''
         if auth_token:
             resp = models.User.decode_auth_token(auth_token)
-            if isinstance(resp, str):
+            try:
+                UUID(resp)
                 # mark the token as blacklisted
                 blacklist_token = models.BlacklistToken(token=auth_token)
                 blacklist_token.save()
@@ -125,7 +128,7 @@ class LogoutUser(Resource):
                     'message': 'Successfully logged out.'
                 }
                 return make_response(jsonify(responseObject), 200)
-            else:
+            except ValueError:
                 responseObject = {
                     'status': 'fail',
                     'message': resp
