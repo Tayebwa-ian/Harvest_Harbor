@@ -139,5 +139,15 @@ curl -s -X GET -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.ey
     "images": []
 }  
   
+curl -X POST --form "image=@images/images.jpg" -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MjQ3ODc4OTYsImlhdCI6MTcyNDc4Njk5Niwic3ViIjoiNmJkNDRhMTctYWYwZC00ZDBjLTgyOTktODA4N2FhZDJmNDMxIn0.gzGUCpivieq1GfIXyXb4DYIzhJ7VnMXrpU0bbhYFs5Y" -H "Content-Type: multipart/form-data" http://127.0.0.1:5000/api/core/181f21f7-a2e5-4591-924c-9fd611b5280b/hubimages  
+{
+    "id": "8fe918fd-e10a-41ad-bd6c-ab956a82bba7",
+    "created_at": "2024-08-27 20:04:09.787631",
+    "updated_at": "2024-08-27 20:04:09.787665",
+    "link": "0730c13be91a1d2e_images.jpg",
+    "product_id": null,
+    "hub_id": "181f21f7-a2e5-4591-924c-9fd611b5280b"
+}  
+  
 
 ```
